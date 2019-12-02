@@ -1,0 +1,36 @@
+plugins {
+	id 'java'
+	id 'io.freefair.lombok' version '4.1.5'
+	id 'org.springframework.boot' version '2.2.1.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+
+group = 'sparkpi'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+// NOTE: to use spark submit you need to set the class to the spring boot launcher
+// spark-submit --master 'local[*]' --class org.springframework.boot.loader.JarLauncher sparkdemo-0.0.1-SNAPSHOT.jar
+
+dependencies {
+	implementation('org.springframework.boot:spring-boot-starter') {
+		// Spark uses log4j so exclude logback
+		exclude module: "logback-classic"
+	}
+
+	implementation 'org.apache.spark:spark-core_2.12:2.4.4'
+	implementation 'org.apache.spark:spark-sql_2.12:2.4.4'
+
+	//implementation 'org.yaml:snakeyaml:1.15'
+
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
